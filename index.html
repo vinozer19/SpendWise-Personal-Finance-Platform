@@ -3,179 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CivicFix smart city issue reporting and resolution platform">
-  <title>CivicFix | Smart City Issue Reporting</title>
-  <link rel="preconnect" href="https://unpkg.com">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIINfQ3u2w5pF5g6G5m0h0gM2YdGJ4g0o0Q="
-    crossorigin="">
+  <meta name="description" content="SpendWise personal finance intelligence dashboard">
+  <title>SpendWise – Personal Finance Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">C</div>
-        <div>
-          <strong>CivicFix</strong>
-          <span>City operations</span>
-        </div>
+        <div class="brand-mark">S</div>
+        <div><strong>SpendWise</strong><span>Financial intelligence</span></div>
       </div>
-      <nav class="nav" aria-label="Primary navigation">
-        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
-        <button class="nav-item" data-view="reports"><span>◉</span> Issue reports</button>
-        <button class="nav-item" data-view="map"><span>⌖</span> City map</button>
-        <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+      <nav class="side-nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-page="overview"><span>⌂</span>Overview</button>
+        <button class="nav-item" data-page="transactions"><span>↔</span>Transactions</button>
+        <button class="nav-item" data-page="budgets"><span>◫</span>Budgets</button>
+        <button class="nav-item" data-page="analytics"><span>◒</span>Analytics</button>
+        <button class="nav-item" data-page="insights"><span>✦</span>Insights</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span>Settings</button>
       </nav>
-      <div class="sidebar-card">
-        <div class="mini-icon">✓</div>
-        <strong>Make your city better</strong>
-        <p>Report a public issue and help route it to the right department.</p>
-        <button class="btn btn-primary btn-block" id="sidebarReportBtn">Report an issue</button>
-      </div>
-      <div class="sidebar-footer">
-        <span class="status-dot"></span> Demo city operations online
+      <div class="sidebar-bottom">
+        <button class="nav-item" id="sidebarTheme"><span>◐</span><span id="sidebarThemeText">Dark mode</span></button>
+        <div class="profile-mini"><div class="avatar">U</div><div><strong>User</strong><small>Personal account</small></div></div>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
-        <div class="breadcrumb"><span>CivicFix</span><b>/</b><span id="pageTitle">Dashboard</span></div>
-        <div class="top-actions">
-          <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">☾</button>
-          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">♢<i></i></button>
-          <div class="user-chip">
-            <div class="avatar">VS</div>
-            <div><strong>City Resident</strong><small>Citizen account</small></div>
-          </div>
+        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open navigation">☰</button>
+        <div class="header-copy">
+          <h1>Good evening, User <span>👋</span></h1>
+          <p>Here's your financial overview for this month.</p>
+        </div>
+        <div class="header-actions">
+          <label class="search-box"><span>⌕</span><input id="globalSearch" type="search" placeholder="Search transactions..." aria-label="Search transactions"></label>
+          <button class="icon-btn" id="headerTheme" aria-label="Toggle theme">◐</button>
+          <button class="icon-btn notification" aria-label="Notifications">♢<i></i></button>
+          <div class="avatar">U</div>
         </div>
       </header>
 
       <div class="content">
-        <section class="view active" id="dashboardView">
-          <div class="hero">
-            <div>
-              <span class="eyebrow">CITIZEN OPERATIONS</span>
-              <h1>Good afternoon, resident.</h1>
-              <p>Track public issues, understand city response, and keep your neighbourhood moving.</p>
-            </div>
-            <button class="btn btn-primary" id="heroReportBtn">＋ Report an issue</button>
-          </div>
-
-          <div class="stat-grid" id="statGrid"></div>
-
-          <div class="dashboard-grid">
-            <section class="panel map-panel">
-              <div class="panel-head">
-                <div><span class="eyebrow">LIVE VIEW</span><h2>City issue map</h2></div>
-                <button class="text-btn" data-view="map">Open full map →</button>
+        <section class="page active" id="page-overview">
+          <div class="hero-card">
+            <div class="hero-main">
+              <div class="eyebrow">TOTAL BALANCE</div>
+              <div class="balance" id="balanceValue">₹0</div>
+              <div class="trend-row"><span class="positive" id="balanceChange">+0%</span><span>vs. last month</span></div>
+              <div class="hero-metrics">
+                <div><span>Income</span><strong id="heroIncome">₹0</strong></div>
+                <div><span>Expenses</span><strong id="heroExpense">₹0</strong></div>
+                <div><span>Savings</span><strong id="heroSavings">₹0</strong></div>
               </div>
-              <div id="dashboardMap" class="map"></div>
-            </section>
-
-            <section class="panel">
-              <div class="panel-head">
-                <div><span class="eyebrow">RECENT ACTIVITY</span><h2>Latest reports</h2></div>
-                <button class="text-btn" data-view="reports">View all →</button>
-              </div>
-              <div id="recentReports" class="activity-list"></div>
-            </section>
-          </div>
-
-          <div class="dashboard-grid lower">
-            <section class="panel">
-              <div class="panel-head"><div><span class="eyebrow">PERFORMANCE</span><h2>Resolution overview</h2></div></div>
-              <div id="miniStatusChart" class="chart-wrap"></div>
-            </section>
-            <section class="panel">
-              <div class="panel-head"><div><span class="eyebrow">ATTENTION</span><h2>Priority watchlist</h2></div></div>
-              <div id="priorityList" class="priority-list"></div>
-            </section>
-          </div>
-        </section>
-
-        <section class="view" id="reportsView">
-          <div class="page-heading">
-            <div><span class="eyebrow">ISSUE MANAGEMENT</span><h1>Issue reports</h1><p>Search, filter and inspect every citizen-submitted issue.</p></div>
-            <button class="btn btn-primary" id="reportsNewBtn">＋ New report</button>
-          </div>
-          <section class="panel filters-panel">
-            <div class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search title, ID, location or description…"></div>
-            <select id="categoryFilter"><option value="">All categories</option></select>
-            <select id="priorityFilter"><option value="">All priorities</option><option>High</option><option>Medium</option><option>Low</option></select>
-            <select id="statusFilter"><option value="">All statuses</option><option>Reported</option><option>Assigned</option><option>In Progress</option><option>Resolved</option></select>
-            <select id="sortFilter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select>
-          </section>
-          <section class="panel table-panel">
-            <div class="table-responsive">
-              <table>
-                <thead><tr><th>Issue</th><th>Category</th><th>Priority</th><th>Status</th><th>Department</th><th>Reported</th><th></th></tr></thead>
-                <tbody id="reportsTable"></tbody>
-              </table>
             </div>
-            <div class="empty-state hidden" id="emptyState"><div>◌</div><h3>No reports found</h3><p>Try changing your search or filters.</p></div>
-          </section>
+            <div class="hero-chart"><canvas id="heroChart" aria-label="Balance trend"></canvas></div>
+          </div>
+
+          <div class="section-head"><div><h2>Financial snapshot</h2><p>A live view of your money movement.</p></div></div>
+          <div class="kpi-grid">
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon green">↗</span><span id="incomeCompare" class="pill positive-bg">+0%</span></div><span>Total Income</span><strong id="incomeValue">₹0</strong><small>Compared with previous period</small><canvas id="incomeSpark"></canvas></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon red">↘</span><span id="expenseCompare" class="pill negative-bg">+0%</span></div><span>Total Expenses</span><strong id="expenseValue">₹0</strong><small>Compared with previous period</small><canvas id="expenseSpark"></canvas></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon blue">✦</span><span id="savingCompare" class="pill positive-bg">+0%</span></div><span>Savings</span><strong id="savingValue">₹0</strong><small>Income minus expenses</small><canvas id="savingSpark"></canvas></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon purple">%</span><span class="pill neutral-bg">Target 30%</span></div><span>Savings Rate</span><strong id="savingRate">0%</strong><small>Share of income saved</small><canvas id="rateSpark"></canvas></article>
+          </div>
+
+          <div class="two-col">
+            <article class="panel budget-panel">
+              <div class="panel-head"><div><span class="eyebrow">MONTHLY BUDGET</span><h3 id="budgetTitle">₹0</h3></div><button class="text-btn" data-page="budgets">Manage →</button></div>
+              <div class="budget-summary"><span>Spent <strong id="budgetSpent">₹0</strong></span><span>Remaining <strong id="budgetRemaining">₹0</strong></span></div>
+              <div class="progress-track"><div class="progress-fill" id="budgetProgress"></div></div>
+              <div class="budget-foot"><span id="budgetPercent">0% used</span><span class="status healthy" id="budgetStatus">Healthy</span></div>
+              <p class="context-note" id="budgetWarning">You're on track to stay within your monthly budget.</p>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><span class="eyebrow">QUICK ACTIONS</span><h3>Take control</h3></div></div>
+              <div class="quick-actions">
+                <button class="quick-action income-action" data-add="income"><b>+</b><span><strong>Add Income</strong><small>Record money in</small></span></button>
+                <button class="quick-action expense-action" data-add="expense"><b>−</b><span><strong>Add Expense</strong><small>Record money out</small></span></button>
+                <button class="quick-action" data-page="budgets"><b>◫</b><span><strong>Set Budget</strong><small>Plan your spending</small></span></button>
+                <button class="quick-action" data-page="analytics"><b>◒</b><span><strong>View Analytics</strong><small>Explore patterns</small></span></button>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel transactions-preview">
+            <div class="panel-head"><div><span class="eyebrow">RECENT ACTIVITY</span><h3>Recent transactions</h3></div><button class="text-btn" data-page="transactions">View All →</button></div>
+            <div id="recentTransactions" class="transaction-list"></div>
+          </article>
         </section>
 
-        <section class="view" id="mapView">
-          <div class="page-heading">
-            <div><span class="eyebrow">GEOSPATIAL OPERATIONS</span><h1>City issue map</h1><p>Explore issue concentration and operational status across the city.</p></div>
-            <div class="map-legend" id="mapLegend"></div>
+        <section class="page" id="page-transactions">
+          <div class="page-title"><div><span class="eyebrow">MONEY MOVEMENT</span><h2>Transactions</h2><p>Track, search and manage every transaction.</p></div><button class="primary-btn" data-add="expense">+ Add transaction</button></div>
+          <div class="filter-bar">
+            <label class="search-box wide"><span>⌕</span><input id="transactionSearch" placeholder="Search description, category or payment method"></label>
+            <select id="typeFilter"><option value="all">All types</option><option value="income">Income</option><option value="expense">Expense</option></select>
+            <select id="categoryFilter"><option value="all">All categories</option></select>
+            <select id="methodFilter"><option value="all">All methods</option></select>
+            <select id="sortFilter"><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="high">Highest amount</option><option value="low">Lowest amount</option></select>
+            <button class="secondary-btn" id="exportCsv">Export CSV</button>
           </div>
-          <section class="panel full-map-panel"><div id="fullMap" class="full-map"></div></section>
+          <article class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Date</th><th>Method</th><th>Amount</th><th></th></tr></thead><tbody id="transactionTable"></tbody></table></div><div id="transactionEmpty" class="empty-state hidden"><div>⌁</div><h3>No transactions found</h3><p>Try changing your filters or add a new transaction.</p></div></article>
         </section>
 
-        <section class="view" id="analyticsView">
-          <div class="page-heading">
-            <div><span class="eyebrow">DECISION INTELLIGENCE</span><h1>City analytics</h1><p>Operational signals for faster response and smarter resource allocation.</p></div>
-            <span class="data-badge">Local demo dataset</span>
+        <section class="page" id="page-budgets">
+          <div class="page-title"><div><span class="eyebrow">SPENDING PLAN</span><h2>Budgets</h2><p>Set limits and keep every category intentional.</p></div><button class="primary-btn" id="editBudget">Set monthly budget</button></div>
+          <div class="budget-overview-grid">
+            <article class="panel big-budget"><span class="eyebrow">MONTHLY BUDGET</span><div class="big-number" id="budgetPageTotal">₹0</div><div class="budget-summary"><span>Spent <strong id="budgetPageSpent">₹0</strong></span><span>Remaining <strong id="budgetPageRemaining">₹0</strong></span></div><div class="progress-track"><div class="progress-fill" id="budgetPageProgress"></div></div><div class="budget-foot"><span id="budgetPagePct">0%</span><span class="status healthy" id="budgetPageStatus">Healthy</span></div></article>
+            <article class="panel health-card"><div><span class="eyebrow">FINANCIAL HEALTH</span><h3 id="healthLabel">Excellent</h3><p>Based on your saving, spending and budget habits.</p></div><div class="score-ring" id="healthRing"><strong id="healthScore">0</strong><span>/100</span></div></article>
           </div>
-          <div class="analytics-grid">
-            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">MIX</span><h2>Issues by category</h2></div></div><div class="chart-box"><canvas id="categoryChart"></canvas></div></section>
-            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">GEOGRAPHY</span><h2>Issues by area</h2></div></div><div class="chart-box"><canvas id="areaChart"></canvas></div></section>
-            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">SPEED</span><h2>Average resolution time</h2></div></div><div class="chart-box"><canvas id="resolutionChart"></canvas></div></section>
-            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">TREND</span><h2>Monthly reports</h2></div></div><div class="chart-box"><canvas id="monthlyChart"></canvas></div></section>
-            <section class="panel chart-panel wide"><div class="panel-head"><div><span class="eyebrow">WORKFLOW</span><h2>Status distribution</h2></div></div><div class="chart-box doughnut-box"><canvas id="statusChart"></canvas></div></section>
+          <div class="section-head"><div><h2>Category budgets</h2><p>Monitor the areas that matter most.</p></div><button class="secondary-btn" id="addCategoryBudget">+ Category budget</button></div>
+          <div id="categoryBudgets" class="category-budget-grid"></div>
+        </section>
+
+        <section class="page" id="page-analytics">
+          <div class="page-title"><div><span class="eyebrow">FINANCIAL ANALYTICS</span><h2>Analytics</h2><p>Understand how your money behaves over time.</p></div><div class="segmented" id="periodFilter"><button data-period="7">7 Days</button><button class="active" data-period="30">30 Days</button><button data-period="90">3 Months</button><button data-period="180">6 Months</button><button data-period="365">1 Year</button></div></div>
+          <div class="analytics-kpis"><div><span>Average Monthly Spending</span><strong id="avgMonthlySpend">₹0</strong></div><div><span>Average Monthly Savings</span><strong id="avgMonthlySaving">₹0</strong></div><div><span>Highest Category</span><strong id="highestCategory">—</strong></div><div><span>Highest Spending Day</span><strong id="highestDay">—</strong></div><div><span>Average Daily Spending</span><strong id="avgDailySpend">₹0</strong></div><div><span>Total Transactions</span><strong id="totalTransactions">0</strong></div></div>
+          <div class="chart-grid"><article class="panel chart-card large"><div class="panel-head"><div><span class="eyebrow">CASH FLOW</span><h3>Income vs Expenses</h3></div></div><canvas id="cashflowChart"></canvas></article><article class="panel chart-card"><div class="panel-head"><div><span class="eyebrow">SPENDING MIX</span><h3>Category Spending</h3></div></div><canvas id="categoryChart"></canvas></article><article class="panel chart-card"><div class="panel-head"><div><span class="eyebrow">TREND</span><h3>Monthly Expenses</h3></div></div><canvas id="monthlyChart"></canvas></article><article class="panel chart-card"><div class="panel-head"><div><span class="eyebrow">WEALTH BUILDING</span><h3>Savings Trend</h3></div></div><canvas id="savingsChart"></canvas></article><article class="panel chart-card"><div class="panel-head"><div><span class="eyebrow">PAYMENT MIX</span><h3>Payment Methods</h3></div></div><canvas id="methodChart"></canvas></article></div>
+        </section>
+
+        <section class="page" id="page-insights">
+          <div class="page-title"><div><span class="eyebrow">FINANCIAL INTELLIGENCE</span><h2>Insights</h2><p>Actionable observations generated from your real activity.</p></div></div>
+          <div class="insight-hero panel"><div class="insight-orb">✦</div><div><span class="eyebrow">YOUR MONEY, EXPLAINED</span><h2 id="insightHeadline">Building your financial picture…</h2><p id="insightSub">SpendWise continuously analyzes your spending and saving patterns.</p></div></div>
+          <div id="insightGrid" class="insight-grid"></div>
+          <div class="panel health-detail"><div><span class="eyebrow">FINANCIAL HEALTH SCORE</span><h2 id="healthDetailScore">0 / 100</h2><p id="healthDetailText">Your score is calculated from savings rate, budget adherence, expense control and spending consistency.</p></div><div id="healthFactors" class="health-factors"></div></div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <div class="page-title"><div><span class="eyebrow">PREFERENCES</span><h2>Settings</h2><p>Customize your SpendWise experience.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel setting-card"><div><h3>Appearance</h3><p>Choose the interface theme.</p></div><div class="theme-options"><button data-theme-choice="light">☀ Light</button><button data-theme-choice="dark">☾ Dark</button></div></article>
+            <article class="panel setting-card"><div><h3>Data management</h3><p>Demo data can be reset to start fresh.</p></div><button class="danger-btn" id="resetData">Reset all data</button></article>
+            <article class="panel setting-card"><div><h3>About SpendWise</h3><p>Premium personal finance dashboard built with HTML, CSS, vanilla JavaScript and Chart.js.</p></div><span class="version">v1.0 • Local-first</span></article>
           </div>
         </section>
       </div>
     </main>
+    <nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-page="overview">⌂<span>Home</span></button><button data-page="transactions">↔<span>Transactions</span></button><button data-page="analytics">◒<span>Analytics</span></button><button data-page="budgets">◫<span>Budgets</span></button><button data-page="settings">⚙<span>Settings</span></button></nav>
+    <button class="fab" data-add="expense" aria-label="Add transaction">+</button>
   </div>
 
-  <div class="modal-backdrop hidden" id="reportModal">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
-      <div class="modal-head"><div><span class="eyebrow">CITIZEN REPORT</span><h2 id="reportModalTitle">Report a public issue</h2></div><button class="icon-btn close-modal" data-close="reportModal">×</button></div>
-      <form id="reportForm">
+  <div class="modal-backdrop hidden" id="transactionModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><span class="eyebrow">TRANSACTION</span><h2 id="modalTitle">Add transaction</h2></div><button class="icon-btn" id="closeModal" aria-label="Close">×</button></div>
+      <form id="transactionForm">
+        <div class="type-toggle"><button type="button" class="active" data-type="expense">Expense</button><button type="button" data-type="income">Income</button></div>
+        <input type="hidden" id="transactionId">
         <div class="form-grid">
-          <label>Issue title<input name="title" required maxlength="80" placeholder="e.g. Broken streetlight near Central Park"></label>
-          <label>Category<select name="category" required id="formCategory"></select></label>
-          <label class="full">Description<textarea name="description" required rows="4" maxlength="500" placeholder="Describe what is happening and any useful context…"></textarea></label>
-          <label>Location<input name="location" required placeholder="Street, landmark or area"></label>
-          <label>Date<input name="date" type="date" required></label>
-          <label>Severity<select name="severity"><option value="1">Low</option><option value="2" selected>Moderate</option><option value="3">Severe</option><option value="4">Critical</option></select></label>
-          <label>Affected people<select name="affected"><option value="1">Few (1–10)</option><option value="2">Some (11–50)</option><option value="3">Many (51–200)</option><option value="4">Large crowd (200+)</option></select></label>
-          <label>Safety risk<select name="safety"><option value="0">None</option><option value="1">Possible</option><option value="2">High</option><option value="3">Immediate</option></select></label>
-          <label class="full">Optional image<input name="image" id="imageInput" type="file" accept="image/*"><small>Image stays in this browser and is stored locally with the report.</small><img id="imagePreview" class="image-preview hidden" alt="Selected issue preview"></label>
+          <label>Amount<input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></label>
+          <label>Category<select id="category" required></select></label>
+          <label>Date<input id="date" type="date" required></label>
+          <label>Payment method<select id="method" required></select></label>
+          <label class="full">Description<input id="description" maxlength="80" placeholder="e.g. Grocery shopping" required></label>
         </div>
-        <div class="priority-preview"><div><span class="eyebrow">SMART PRIORITY</span><strong id="smartPriority">Medium</strong></div><span id="priorityReason">Calculated from category, severity, affected people and safety risk.</span></div>
-        <div class="modal-actions"><button type="button" class="btn btn-ghost close-modal" data-close="reportModal">Cancel</button><button type="submit" class="btn btn-primary">Submit report</button></div>
+        <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button class="primary-btn" type="submit">Save transaction</button></div>
       </form>
     </div>
   </div>
 
-  <div class="modal-backdrop hidden" id="detailModal">
-    <div class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
-      <div class="modal-head"><div><span class="eyebrow">REPORT DETAIL</span><h2 id="detailTitle"></h2></div><button class="icon-btn close-modal" data-close="detailModal">×</button></div>
-      <div id="detailContent"></div>
-    </div>
+  <div class="modal-backdrop hidden" id="budgetModal">
+    <div class="modal small-modal" role="dialog" aria-modal="true"><div class="modal-head"><div><span class="eyebrow">BUDGET PLAN</span><h2>Monthly budget</h2></div><button class="icon-btn close-budget">×</button></div><form id="budgetForm"><label>Monthly budget<input id="monthlyBudgetInput" type="number" min="0" step="100" required></label><div class="modal-actions"><button type="button" class="secondary-btn close-budget">Cancel</button><button class="primary-btn">Save budget</button></div></form></div>
   </div>
+  <div class="modal-backdrop hidden" id="categoryBudgetModal">
+    <div class="modal small-modal" role="dialog" aria-modal="true"><div class="modal-head"><div><span class="eyebrow">CATEGORY LIMIT</span><h2>Category budget</h2></div><button class="icon-btn close-cat-budget">×</button></div><form id="categoryBudgetForm"><input type="hidden" id="categoryBudgetOld"><label>Category<select id="budgetCategory"></select></label><label>Budget amount<input id="categoryBudgetAmount" type="number" min="0" step="100" required></label><div class="modal-actions"><button type="button" class="secondary-btn close-cat-budget">Cancel</button><button class="primary-btn">Save budget</button></div></form></div>
+  </div>
+  <div class="toast-container" id="toastContainer"></div>
 
-  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

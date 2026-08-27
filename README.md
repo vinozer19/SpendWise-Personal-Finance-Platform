@@ -1,149 +1,107 @@
-# CivicFix – Smart City Issue Reporting & Resolution Platform
+# SpendWise – Personal Finance Intelligence Dashboard
 
-CivicFix is a realistic, responsive citizen-operations web application for reporting public infrastructure problems, tracking service progress, and understanding city-level issue trends.
+SpendWise is a premium, local-first personal finance dashboard designed to make spending, budgeting and financial health easy to understand.
 
 ## Features
 
-- Citizen dashboard with total, open, in-progress, resolved and high-priority metrics
-- Issue reporting workflow with category, location, severity, affected population and safety risk
-- Smart priority engine that converts multiple risk signals into High / Medium / Low priority
-- Status workflow: **Reported → Assigned → In Progress → Resolved**
-- Report detail modal with department, resolution date and timeline
-- Interactive Leaflet city map with category-based markers
-- Search, category, priority and status filters
-- Newest/oldest sorting
-- Analytics for category, area, resolution time, monthly volume and status distribution
-- Optional image preview/storage using LocalStorage
-- Responsive government-tech/SaaS UI
-- Light/dark mode
-- Toast notifications and modal dialogs
-- Seeded realistic Chennai-style demo city data
+- Modern fintech SaaS dashboard with light/dark themes
+- Dynamic balance, income, expenses, savings and savings-rate KPIs
+- Transaction CRUD with validation
+- Search, filter and sort transactions
+- CSV export to `spendwise-transactions.csv`
+- Monthly and category budgets with overspending detection
+- Chart.js analytics for cash flow, category mix, expenses, savings and payment methods
+- Dynamic financial intelligence insights
+- Financial Health Score out of 100
+- 30–40 realistic Indian demo transactions on first launch
+- LocalStorage persistence
+- Responsive desktop, tablet and mobile navigation
+- Accessible labels, focus states, semantic controls and modal behavior
+- No framework or backend required
 
-## Files
+## Tech Stack
+
+- HTML5
+- CSS3
+- Vanilla JavaScript ES6+
+- Chart.js 4 via CDN
+- LocalStorage
+- Browser Blob API for CSV export
+
+## UI/UX Design
+
+The interface follows a premium fintech direction: generous spacing, rounded surfaces, restrained gradients, subtle borders/shadows, high-contrast typography, clear financial status colors and lightweight micro-interactions.
+
+Light mode uses white surfaces and soft gray backgrounds. Dark mode uses deep charcoal surfaces with subtle borders. Green represents positive financial movement, red represents expense/warning states, while blue/purple support analytics.
+
+## Project Structure
 
 ```text
-civicfix/
+spendwise/
 ├── index.html
 ├── style.css
 ├── script.js
 └── README.md
 ```
 
-## Run locally
+## Setup
 
-Because the application is client-side only, no backend is required.
+1. Download or clone the project.
+2. Keep the four files in the same folder.
+3. Open `index.html` in a modern browser.
+4. No build step or server is required.
 
-### Option 1 — Open directly
+Chart.js is loaded from its CDN, so an internet connection is required for charts. The rest of the application is client-side.
 
-Open `index.html` in a modern browser.
+## LocalStorage Architecture
 
-### Option 2 — Recommended local server
+SpendWise stores one JSON object under the key `spendwise_v1`:
 
-From the project folder:
+- `transactions`
+- `budget`
+- `categoryBudgets`
+- `theme`
 
-```bash
-python -m http.server 8000
-```
+Transactions are never replaced by demo data after the first stored state exists. Refreshing the browser keeps the user's data.
 
-Then open:
+## Chart.js Usage
 
-```text
-http://localhost:8000
-```
+Chart.js powers:
 
-A local server is recommended for predictable browser behavior and external CDN loading.
+- Income vs Expenses
+- Monthly Expenses
+- Category Spending
+- Savings Trend
+- Payment Method Distribution
 
-## Technology
+Analytics are recalculated from the selected time range and transaction dataset. Charts are destroyed and recreated when the period or theme changes to keep the UI synchronized.
 
-- HTML5 semantic structure
-- CSS3 responsive layout and design system
-- Vanilla JavaScript ES6+
-- Browser LocalStorage for persistence
-- FileReader API for local image preview/storage
-- Leaflet.js 1.9.4 via CDN
-- OpenStreetMap tiles
+## Demo Data
 
-## Data model
+On the first launch, SpendWise creates 38 realistic transactions using Indian scenarios such as salary, Swiggy, Zomato, Amazon, Uber, groceries, utilities, Netflix, pharmacy, fuel, college fees and shopping.
 
-Each report contains:
+The demo data is only created when no SpendWise LocalStorage state exists.
 
-- `id`
-- `title`
-- `description`
-- `category`
-- `location`
-- `date`
-- `priority`
-- `severity`
-- `affected`
-- `safety`
-- `status`
-- `department`
-- `resolutionDate`
-- `lat`
-- `lng`
-- `history`
-- `createdAt`
-- optional `image`
+## Future Improvements
 
-Reports are persisted under:
+- Recurring transaction automation
+- Import transactions from bank CSV files
+- Multiple accounts and wallets
+- Financial goals
+- Subscription detection
+- Budget rollover
+- PWA/offline caching
+- More advanced forecasting
+- Optional cloud sync with authentication
+
+## Screenshots
+
+Add portfolio screenshots here after capturing the dashboard:
 
 ```text
-civicfix_reports_v1
+![SpendWise Dashboard](dashboard.png)
 ```
-
-Theme preference is persisted under:
-
-```text
-civicfix_theme
-```
-
-## Smart priority logic
-
-Priority is intentionally transparent rather than being a black-box ML prediction.
-
-The score combines:
-
-1. Category risk weight
-2. Severity
-3. Number of affected people
-4. Safety risk
-
-Higher combined risk produces a High priority classification. The interface also explains which factors drove the classification.
-
-## Demo data
-
-The first launch seeds the browser with realistic city issue records across areas such as Anna Salai, Adyar, T. Nagar, Velachery, Nungambakkam, Besant Nagar, Guindy, Mylapore and other Chennai-area locations.
-
-To reset the demo dataset, open the browser developer console and run:
-
-```js
-localStorage.removeItem("civicfix_reports_v1");
-location.reload();
-```
-
-## Production roadmap
-
-For a production deployment, the LocalStorage layer can be replaced by an API and database while retaining the existing UI:
-
-- Citizen authentication and role-based access
-- PostgreSQL/PostGIS for reports and geospatial queries
-- REST/GraphQL API
-- Image storage with signed URLs
-- Department/operator console
-- Real-time status notifications
-- SLA breach detection
-- Duplicate issue clustering
-- GPS capture and address geocoding
-- Audit logs
-- Privacy controls and moderation
-- Accessibility testing against WCAG 2.2 AA
-- Observability, automated tests and CI/CD
-
-## Accessibility
-
-The UI uses semantic controls, visible focus states, accessible labels, responsive layouts, sufficient text hierarchy and modal dialog semantics. A production release should still be validated with keyboard-only navigation, screen readers and automated accessibility testing.
 
 ## License
 
-Use and adapt this demo project for portfolio, learning and prototyping purposes.
+Free to adapt for personal portfolios and learning projects.
