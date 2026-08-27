@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CivicFix smart city issue reporting and resolution platform">
+  <title>CivicFix | Smart City Issue Reporting</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3u2w5pF5g6G5m0h0gM2YdGJ4g0o0Q="
+    crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div>
+          <strong>CivicFix</strong>
+          <span>City operations</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="reports"><span>◉</span> Issue reports</button>
+        <button class="nav-item" data-view="map"><span>⌖</span> City map</button>
+        <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+      </nav>
+      <div class="sidebar-card">
+        <div class="mini-icon">✓</div>
+        <strong>Make your city better</strong>
+        <p>Report a public issue and help route it to the right department.</p>
+        <button class="btn btn-primary btn-block" id="sidebarReportBtn">Report an issue</button>
+      </div>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> Demo city operations online
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>CivicFix</span><b>/</b><span id="pageTitle">Dashboard</span></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">☾</button>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">♢<i></i></button>
+          <div class="user-chip">
+            <div class="avatar">VS</div>
+            <div><strong>City Resident</strong><small>Citizen account</small></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view active" id="dashboardView">
+          <div class="hero">
+            <div>
+              <span class="eyebrow">CITIZEN OPERATIONS</span>
+              <h1>Good afternoon, resident.</h1>
+              <p>Track public issues, understand city response, and keep your neighbourhood moving.</p>
+            </div>
+            <button class="btn btn-primary" id="heroReportBtn">＋ Report an issue</button>
+          </div>
+
+          <div class="stat-grid" id="statGrid"></div>
+
+          <div class="dashboard-grid">
+            <section class="panel map-panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">LIVE VIEW</span><h2>City issue map</h2></div>
+                <button class="text-btn" data-view="map">Open full map →</button>
+              </div>
+              <div id="dashboardMap" class="map"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">RECENT ACTIVITY</span><h2>Latest reports</h2></div>
+                <button class="text-btn" data-view="reports">View all →</button>
+              </div>
+              <div id="recentReports" class="activity-list"></div>
+            </section>
+          </div>
+
+          <div class="dashboard-grid lower">
+            <section class="panel">
+              <div class="panel-head"><div><span class="eyebrow">PERFORMANCE</span><h2>Resolution overview</h2></div></div>
+              <div id="miniStatusChart" class="chart-wrap"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><div><span class="eyebrow">ATTENTION</span><h2>Priority watchlist</h2></div></div>
+              <div id="priorityList" class="priority-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="reportsView">
+          <div class="page-heading">
+            <div><span class="eyebrow">ISSUE MANAGEMENT</span><h1>Issue reports</h1><p>Search, filter and inspect every citizen-submitted issue.</p></div>
+            <button class="btn btn-primary" id="reportsNewBtn">＋ New report</button>
+          </div>
+          <section class="panel filters-panel">
+            <div class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search title, ID, location or description…"></div>
+            <select id="categoryFilter"><option value="">All categories</option></select>
+            <select id="priorityFilter"><option value="">All priorities</option><option>High</option><option>Medium</option><option>Low</option></select>
+            <select id="statusFilter"><option value="">All statuses</option><option>Reported</option><option>Assigned</option><option>In Progress</option><option>Resolved</option></select>
+            <select id="sortFilter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select>
+          </section>
+          <section class="panel table-panel">
+            <div class="table-responsive">
+              <table>
+                <thead><tr><th>Issue</th><th>Category</th><th>Priority</th><th>Status</th><th>Department</th><th>Reported</th><th></th></tr></thead>
+                <tbody id="reportsTable"></tbody>
+              </table>
+            </div>
+            <div class="empty-state hidden" id="emptyState"><div>◌</div><h3>No reports found</h3><p>Try changing your search or filters.</p></div>
+          </section>
+        </section>
+
+        <section class="view" id="mapView">
+          <div class="page-heading">
+            <div><span class="eyebrow">GEOSPATIAL OPERATIONS</span><h1>City issue map</h1><p>Explore issue concentration and operational status across the city.</p></div>
+            <div class="map-legend" id="mapLegend"></div>
+          </div>
+          <section class="panel full-map-panel"><div id="fullMap" class="full-map"></div></section>
+        </section>
+
+        <section class="view" id="analyticsView">
+          <div class="page-heading">
+            <div><span class="eyebrow">DECISION INTELLIGENCE</span><h1>City analytics</h1><p>Operational signals for faster response and smarter resource allocation.</p></div>
+            <span class="data-badge">Local demo dataset</span>
+          </div>
+          <div class="analytics-grid">
+            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">MIX</span><h2>Issues by category</h2></div></div><div class="chart-box"><canvas id="categoryChart"></canvas></div></section>
+            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">GEOGRAPHY</span><h2>Issues by area</h2></div></div><div class="chart-box"><canvas id="areaChart"></canvas></div></section>
+            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">SPEED</span><h2>Average resolution time</h2></div></div><div class="chart-box"><canvas id="resolutionChart"></canvas></div></section>
+            <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">TREND</span><h2>Monthly reports</h2></div></div><div class="chart-box"><canvas id="monthlyChart"></canvas></div></section>
+            <section class="panel chart-panel wide"><div class="panel-head"><div><span class="eyebrow">WORKFLOW</span><h2>Status distribution</h2></div></div><div class="chart-box doughnut-box"><canvas id="statusChart"></canvas></div></section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="reportModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+      <div class="modal-head"><div><span class="eyebrow">CITIZEN REPORT</span><h2 id="reportModalTitle">Report a public issue</h2></div><button class="icon-btn close-modal" data-close="reportModal">×</button></div>
+      <form id="reportForm">
+        <div class="form-grid">
+          <label>Issue title<input name="title" required maxlength="80" placeholder="e.g. Broken streetlight near Central Park"></label>
+          <label>Category<select name="category" required id="formCategory"></select></label>
+          <label class="full">Description<textarea name="description" required rows="4" maxlength="500" placeholder="Describe what is happening and any useful context…"></textarea></label>
+          <label>Location<input name="location" required placeholder="Street, landmark or area"></label>
+          <label>Date<input name="date" type="date" required></label>
+          <label>Severity<select name="severity"><option value="1">Low</option><option value="2" selected>Moderate</option><option value="3">Severe</option><option value="4">Critical</option></select></label>
+          <label>Affected people<select name="affected"><option value="1">Few (1–10)</option><option value="2">Some (11–50)</option><option value="3">Many (51–200)</option><option value="4">Large crowd (200+)</option></select></label>
+          <label>Safety risk<select name="safety"><option value="0">None</option><option value="1">Possible</option><option value="2">High</option><option value="3">Immediate</option></select></label>
+          <label class="full">Optional image<input name="image" id="imageInput" type="file" accept="image/*"><small>Image stays in this browser and is stored locally with the report.</small><img id="imagePreview" class="image-preview hidden" alt="Selected issue preview"></label>
+        </div>
+        <div class="priority-preview"><div><span class="eyebrow">SMART PRIORITY</span><strong id="smartPriority">Medium</strong></div><span id="priorityReason">Calculated from category, severity, affected people and safety risk.</span></div>
+        <div class="modal-actions"><button type="button" class="btn btn-ghost close-modal" data-close="reportModal">Cancel</button><button type="submit" class="btn btn-primary">Submit report</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="detailModal">
+    <div class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="modal-head"><div><span class="eyebrow">REPORT DETAIL</span><h2 id="detailTitle"></h2></div><button class="icon-btn close-modal" data-close="detailModal">×</button></div>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <script src="script.js"></script>
+</body>
+</html>
