@@ -94,14 +94,6 @@ The demo data is only created when no SpendWise LocalStorage state exists.
 - More advanced forecasting
 - Optional cloud sync with authentication
 
-## Screenshots
-
-Add portfolio screenshots here after capturing the dashboard:
-
-```text
-![SpendWise Dashboard](dashboard.png)
-```
-
 ## License
 
 Free to adapt for personal portfolios and learning projects.
